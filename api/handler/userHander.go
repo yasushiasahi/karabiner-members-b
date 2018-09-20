@@ -21,8 +21,12 @@ func NewUserHandler(master *gorm.DB) http.Handler {
 func (h UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Method, r.URL.Path)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	switch r.Method {
+	case "OPTIONS":
+		w.WriteHeader(http.StatusNoContent)
 	case "POST":
 		h.create(w, r)
 		return

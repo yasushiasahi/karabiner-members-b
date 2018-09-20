@@ -1,7 +1,7 @@
 <template>
   <div>
-    <span v-for="member in members" v-bind:key="member.name" v-on:click="() => handleClick(member.name)">
-      {{ member.name }}
+    <span v-for="n in names" v-bind:key="n" v-on:click="() => handleClick(n)">
+      {{ n }}
     </span>
   </div>
 </template>
@@ -13,14 +13,12 @@ import { Member } from './../types'
 @Component
 export default class MemberNames extends Vue {
   @Prop()
-  private members!: Member[]
-
-  @Emit('handleClick')
-  handleClick(name: string): void {}
+  private names!: string[]
+  @Prop()
+  private handleClick!: (name: string) => void
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 span {
   display: inline-block;

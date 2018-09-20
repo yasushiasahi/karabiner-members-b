@@ -1,6 +1,8 @@
 package db
 
 import (
+	"os"
+
 	"github.com/jinzhu/gorm"
 	// driver for mysql
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -14,7 +16,8 @@ type User struct {
 
 // Init inits db
 func Init() (*gorm.DB, error) {
-	url := "localhost"
+
+	url := os.Getenv("KM_DB_URL")
 
 	db, err := gorm.Open("mysql", "root:karabiner@tcp("+url+")/karabiner?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {

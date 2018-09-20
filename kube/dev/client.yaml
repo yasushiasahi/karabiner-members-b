@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kmclient
+  labels:
+    app: kmclient
+spec:
+  selector:
+    app: kmclient
+  ports:
+    - name: http
+      port: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kmclient
+  labels:
+    name: kmclient
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kmclient
+  template:
+    metadata:
+      labels:
+        app: kmclient
+    spec:
+      containers:
+      # - name: nginx
+      #   image: asahi1600/km-nginx-cli:latest
+      #   imagePullPolicy: Always
+      #   ports:
+      #   - containerPort: 80
+      #   volumeMounts:
+      #   - name: dist
+      #     mountPath: "/usr/share/nginx/html"
+      - name: client
+        image: asahi1600/km-client-dev:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: cli-root
+          mountPath: "/client/src"
+      volumes:
+      - name: cli-root
+        hostPath:
+          path: "/Users/asahi/dev/src/github.com/yasushiasahi/karabiner-members/client/src"
+          type: DirectoryOrCreate

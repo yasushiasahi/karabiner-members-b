@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kmsql
+  labels:
+    app: kmsql
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+  selector:
+    app: kmsql
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kmsql
+  labels:
+    app: kmsql
+spec:
+  serviceName: "kmsql"
+  selector:
+    matchLabels:
+      app: kmsql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kmsql
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: mysql
+        image: mysql:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "karabiner"
+        - name: MYSQL_DATABASE
+          value: "karabiner"

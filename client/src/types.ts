@@ -3,3 +3,8 @@ export interface Member {
   title: string
   name: string
 }
+
+export interface User {
+  name: string
+  score: number
+}

@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kmapi
+  labels:
+    app: kmapi
+spec:
+  selector:
+    app: kmapi
+  ports:
+    - name: http
+      port: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kmapi
+  labels:
+    name: kmapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kmapi
+  template:
+    metadata:
+      labels:
+        app: kmapi
+    spec:
+      containers:
+      # - name: nginx
+      #   image: gihyodocker/nginx:latest
+      #   imagePullPolicy: Always
+      #   ports:
+      #   - containerPort: 80
+      #   env:
+      #   - name: WORKER_PROCESSES
+      #     value: "2"
+      #   - name: WORKER_CONNECTIONS
+      #     value: "1024"
+      #   - name: LOG_STDOUT
+      #     value: "true"
+      #   - name: BACKEND_HOST
+      #     value: "localhost:8080"
+      - name: api
+        image: asahi1600/km-api-dev:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: KM_DB_URL
+          value: "kmsql"
+        volumeMounts:
+        - name: api
+          mountPath: "/go/src/github.com/yasushiasahi/karabiner-members/api"
+        command: ["reflex"]
+        args: ["-r","'go$'","-s","go","run","main.go"]
+      volumes:
+      - name: api
+        hostPath:
+          path: "/Users/asahi/dev/src/github.com/yasushiasahi/karabiner-members/api"
+          type: DirectoryOrCreate

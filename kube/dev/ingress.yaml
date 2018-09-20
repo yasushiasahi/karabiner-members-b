@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  rules:
+  - host: 192.168.11.2.xip.io
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: kmclient
+          servicePort: 8080
+      # - path: /api
+      #   backend:
+      #     serviceName: kmapi
+      #     servicePort: 3000

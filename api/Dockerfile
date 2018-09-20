@@ -1,13 +1,18 @@
 FROM golang:1.10.4-alpine3.8
 
-WORKDIR /
+
 ENV GOPATH /go
+RUN apk add git curl
 
-RUN apk add --no-cache git
+WORKDIR /go/src/github.com/yasushiasahi/karabiner-members/api
 
-COPY . /go/src/github.com/yasushiasahi/karabiner-members/api
 RUN go get github.com/go-sql-driver/mysql
-RUN cd /go/src/github.com/yasushiasahi/karabiner-members/api && go build
-RUN cd /go/src/github.com/yasushiasahi/karabiner-members/api && cp api /usr/local/bin/
+RUN go get -u github.com/jinzhu/gorm
+RUN go get github.com/cespare/reflex
+RUN go get github.com/PuerkitoBio/goquery
 
-CMD ["api"]
+RUN cp /go/bin/reflex /usr/local/bin/
+
+CMD ["reflex","-r","go$","-s","go","run","main.go"]
+
+EXPOSE 3000

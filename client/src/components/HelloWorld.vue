@@ -13,29 +13,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import axios from 'axios'
-
-interface User {
-  id: number
-  name: string
-  pass: string
-  token: string
-}
-
-@Component
-export default class HelloWorld extends Vue {
-  @Prop()
-  private msg!: string
-
-  private users: User[] = []
-
-  private mounted(): void {
-    instance.get('user').then((res) => {
-      this.users = res.data
-    })
-  }
-}
+/* import { Component, Prop, Vue } from 'vue-property-decorator'
+  * import axios from 'axios'
+  *
+  * interface User {
+  *   id: number
+  *   name: string
+  *   pass: string
+  *   token: string
+  * }
+  *
+  * @Component
+  * export default class HelloWorld extends Vue {
+  *   @Prop()
+  *   private msg!: string
+  *
+  *   private users: User[] = []
+  *
+  *   private mounted(): void {
+  *     instance.get('user').then((res) => {
+  *       this.users = res.data
+  *     })
+  *   }
+  * } */
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
